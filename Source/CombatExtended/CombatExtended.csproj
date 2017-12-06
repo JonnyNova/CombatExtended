@@ -166,6 +166,7 @@
     <Compile Include="CombatExtended\Enums\AimMode.cs" />
     <Compile Include="CombatExtended\Things\Apparel_Shield.cs" />
     <Compile Include="CombatExtended\ThinkNodes\ThinkNode_ConditionalHasLoadout.cs" />
+    <Compile Include="CombatExtended\ToolCE.cs" />
     <Compile Include="CombatExtended\Verbs\Verb_MeleeAttackCE.cs" />
     <Compile Include="CombatExtended\WorkGivers\WorkGiver_HunterHuntCE.cs" />
     <Compile Include="CombatExtended\Defs\DamageDefExtensionCE.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="CombatExtended\Verbs\Verb_MarkForArtilleryCE.cs" />
     <Compile Include="CombatExtended\Verbs\Verb_ShootMortarCE.cs" />
     <Compile Include="CombatExtended\Verbs\Verb_ShootCEOneUse.cs" />
+    <Compile Include="Harmony\Harmony-DamageWorker_AddInjury.cs" />
     <Compile Include="Harmony\Harmony-DefGenerator.cs" />
     <Compile Include="Harmony\Harmony-Fire.cs" />
     <Compile Include="Harmony\Harmony-FloatMenuMakerMap.cs" />
@@ -253,6 +255,7 @@
     <Compile Include="Harmony\Harmony-ThingOwner.cs" />
     <Compile Include="Harmony\Harmony-TooltipUtility.cs" />
     <Compile Include="Harmony\Harmony-TradeDeal.cs" />
+    <Compile Include="Harmony\Harmony-Verb.cs" />
     <Compile Include="Harmony\Harmony-VerbTracker.cs" />
     <Compile Include="Harmony\Harmony-Verb_TryStartCastOn.cs" />
     <Compile Include="Harmony\Harmony-WorkGiver_HunterHunt.cs" />

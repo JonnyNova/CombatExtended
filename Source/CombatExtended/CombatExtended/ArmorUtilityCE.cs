@@ -180,7 +180,7 @@ namespace CombatExtended
             {
                 return dinfo.Amount * 0.1f; // Explosions have 10% of their damage as penetration
             }
-
+            
             if (dinfo.Weapon != null)
             {
                 // Case 1: projectile attack
@@ -195,18 +195,34 @@ namespace CombatExtended
                 if (instigatorPawn != null)
                 {
                     // Pawn is using melee weapon
-                    if (dinfo.Weapon.IsMeleeWeapon)
+                    if (dinfo.Weapon.IsWeapon)
                     {
-                        if (instigatorPawn.equipment == null
-                            || instigatorPawn.equipment.Primary == null
-                            || instigatorPawn.equipment.Primary.def != dinfo.Weapon)
+                        var equipment = instigatorPawn.equipment?.Primary;
+                        if (equipment == null || equipment.def != dinfo.Weapon)
                         {
                             Log.Error("CE tried getting armor penetration from melee weapon " + dinfo.Weapon.defName + " but instigator " + dinfo.Instigator.ToString() + " equipment does not match");
                             return 0;
                         }
-                        return instigatorPawn.equipment.Primary.GetStatValue(CE_StatDefOf.MeleeWeapon_Penetration);
+                        var penetrationMult = equipment.GetStatValue(CE_StatDefOf.MeleeWeapon_Penetration);
+                        var tool = equipment.def.tools.FirstOrDefault(t => t.linkedBodyPartsGroup == dinfo.WeaponBodyPartGroup) as ToolCE;
+                        return tool.armorPenetration * penetrationMult;
                     }
 
+                    // Get penetration from tool
+                    if (instigatorPawn.verbTracker != null
+                    && !instigatorPawn.verbTracker.AllVerbs.NullOrEmpty())
+                    {
+                        Verb verb = instigatorPawn.verbTracker.AllVerbs.FirstOrDefault(v => v.verbProps.linkedBodyPartsGroup == dinfo.WeaponBodyPartGroup);
+                        if (verb == null)
+                        {
+                            Log.Error("CE could not find matching verb on Pawn " + instigatorPawn.ToString() + " for BodyPartGroup " + dinfo.WeaponBodyPartGroup.ToString());
+                            return 0;
+                        }
+                        var tool = verb.tool as ToolCE;
+                        if (tool != null) return tool.armorPenetration;
+                    }
+
+                    /*
                     // Pawn is using body parts
                     if (instigatorPawn.def == dinfo.Weapon)
                     {
@@ -233,10 +249,11 @@ namespace CombatExtended
                                 Log.Error("CE could not find matching verb on Pawn " + instigatorPawn.ToString() + " for BodyPartGroup " + dinfo.WeaponBodyPartGroup.ToString());
                                 return 0;
                             }
-                            VerbPropertiesCE verbProps = verb.verbProps as VerbPropertiesCE;
-                            if (verbProps != null) return verbProps.meleeArmorPenetration;
+                            var tool = verb.tool as ToolCE;
+                            if (tool != null) return tool.armorPenetration;
                         }
                     }
+                    */
                 }
             }
 #if DEBUG
